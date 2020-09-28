@@ -75,6 +75,8 @@ export default {
   ul {
     margin: 0;
   }
+
+  
    
   .dots{
     display: flex !important;

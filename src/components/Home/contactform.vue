@@ -132,6 +132,8 @@ export default {
         padding: 0 15px;
         padding-top: 40px;
         padding-bottom: 90px;
+        width: 100%;
+        clear: both;
         h1{
             font-size: 25px;
             font-weight: 200;
@@ -175,6 +177,7 @@ export default {
                     color: $purple;
                     padding: 10px;
                     font-size: 12.5px;
+                    resize: none;
                 }
                 .inputerror{
                     color:#e90000;
@@ -206,6 +209,9 @@ export default {
             }
             
         }
+    }
+    .hide{
+        display: none;
     }
     @media(min-width: 600px){
         section{
