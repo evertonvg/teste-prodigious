@@ -1,7 +1,7 @@
 <template>
     <div ref="sendform" @click="close">
         <div class="beintouch" @click.stop>
-        <img src="/svg/close.svg" alt="close" @click="close">
+        <img src="/svg/close.svg" alt="close" @click="close" class="close">
         <h2>
             Thank you for <br>
             getting in touch. <br>
@@ -55,6 +55,7 @@ export default {
             align-items: center;
             justify-content: center;
             flex-direction: column;
+            max-width:450px;
             h2{
                 text-align: center;
                 font-size: 20.8px;
@@ -67,11 +68,12 @@ export default {
                 color:#8ec642;
                 font-weight: 800;
             }
-            img{
+            .close{
                 position: absolute;
                 top: 20px;
                 right: 20px;
                 width: 30px;
+                cursor: pointer;
             }
         }
         

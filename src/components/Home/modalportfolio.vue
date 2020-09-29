@@ -44,6 +44,7 @@ export default {
         flex-direction: row;
         width: 100%;
         height: 100%;
+
         .beintouch{
             margin-left: 15px;
             margin-right: 15px;
@@ -58,6 +59,7 @@ export default {
             flex-direction: column;
             overflow: hidden;
             padding: 20px;
+            max-width:450px;
             h2{
                 text-align: center;
                 font-size: 20.8px;
@@ -79,6 +81,7 @@ export default {
                 right: 20px;
                 width: 30px;
                 font-weight: 800;
+                cursor: pointer;
             }
         }
         

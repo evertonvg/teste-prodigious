@@ -29,7 +29,6 @@
                         <path d="M15 2.013H9V9H2v6h7v6.987h6V15h7V9h-7z" :fill="d.color"/>
                     </svg>
                 </button>
-                
             </div>
         </div>
         <div class="loadmore" :class="{'hide': limit>object.length }">
@@ -70,8 +69,7 @@ export default {
                 }
             })
             return d.sort()
-        }
-        
+        } 
     },
     methods:{
         limitbreak(){
@@ -122,11 +120,7 @@ export default {
         axios.get('/api/portifolio')
         .then(function(res){
             context.loaddados = res.data.clients
-            // context.loaddados.forEach(function(el){
-            //     el.active = false
-            // })
             context.dados = context.loaddados
-
         }).catch(function(error){
             console.log(error)
         })
@@ -297,6 +291,11 @@ export default {
                     height: 250px;
                 }
             }
+            .searchitens {
+                div.active{
+                    padding-left: 5%;
+                }
+            }
         }
     }
     @media(min-width:900px){
@@ -324,6 +323,11 @@ export default {
                         }
 
                     }
+                }
+            }
+            .searchitens {
+                div.active{
+                    padding-left: 10%;
                 }
             }
         }
