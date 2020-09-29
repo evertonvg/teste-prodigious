@@ -1,6 +1,6 @@
 <template>
-    <div ref="sendform">
-        <div class="beintouch">
+    <div ref="sendform" @click="close">
+        <div class="beintouch" @click.stop>
         <img src="/svg/close.svg" alt="close" @click="close">
         <h2>
             Thank you for <br>
@@ -14,7 +14,7 @@
 <script>
 import mixinss from '../../mixins/mixins.js'
 export default {
-    name:'sendform',
+    name:'modalform',
     mixins:[mixinss],
     methods:{
         open(){

@@ -4,7 +4,7 @@
 
         <button type="button" class="filter"  @click="openfiltermethod">
             {{filter}} 
-            <img src="/svg/arrow.svg" alt="arrow" :class="{'active': openfilter == true }">
+            <img src="/svg/arrow.svg" alt="arrow" :class="{'active': openfilter == true , 'loading' : loading == true }" >
         </button>
             
         <div class="searchitens">
@@ -14,13 +14,13 @@
             </div>
         </div>
 
-        <div v-for="d in object" :key="d.name" class="item">
+        <div v-for="d in object" :key="d.name" class="item active">
             <div class="imagebox">
-                <img :src="'/photos/'+d.photo" alt="">
+                <img :src="'/photos/'+d.photo" :alt="d.name">
             </div>
             <div class="title" >
                 {{d.name}}  
-                <button class="titleplus" @click="d.active=!d.active;">
+                <button class="titleplus" @click="activemodal(d)">
                     <svg xmlns="http://www.w3.org/2000/svg" 
                         xmlns:xlink="http://www.w3.org/1999/xlink" 
                         aria-hidden="true" focusable="false" width="1em" 
@@ -28,31 +28,23 @@
                         preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
                         <path d="M15 2.013H9V9H2v6h7v6.987h6V15h7V9h-7z" :fill="d.color"/>
                     </svg>
-
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" :class="{'active': d.active==true }"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" 
-                        aria-hidden="true" focusable="false" width="1em" height="1em" 
-                        style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" 
-                        preserveAspectRatio="xMidYMid meet" viewBox="0 0 512 512">
-                        <path d="M1 229.3h512v85.3H1z" :fill="d.color"/>
-                    </svg> -->
                 </button>
                 
             </div>
-            <p class="'textdetail" :class="{'active': d.active==true }">
-                {{d.description}}
-            </p>
         </div>
         <div class="loadmore" :class="{'hide': limit>object.length }">
             <button type="button" @click="limitbreak" >{{button}}</button>
         </div>
+        <modalportfolio :dados="dataclient" ref="modal"></modalportfolio>
     </section>
 </template>
 
 <script>
 import axios from 'axios'
+import modalportfolio from './modalportfolio'
 export default {
     name:'portfolio',
+    components:{modalportfolio},
     data(){
         return{
             loaddados:[],
@@ -61,7 +53,9 @@ export default {
             button:'load more',
             limit:3,
             openfilter: false,
-            count:0
+            count:0,
+            loading : false,
+            dataclient:[]
         }
     },
     computed:{
@@ -88,9 +82,6 @@ export default {
                 context.button = 'load more'
             },500)
         },
-        activetext(){
-            console.log(this.dados[0].active)
-        },
         openfiltermethod(){
             this.openfilter = !this.openfilter
         },
@@ -98,7 +89,8 @@ export default {
             let context = this
             this.openfilter = !this.openfilter
             this.button = 'loading'
-            this.filter = ev.target.innerHTML
+            this.filter = 'loading'
+            this.loading = true
             this.limit = 3
             setTimeout(function(){
                 if(ev.target.innerHTML=='All'){
@@ -115,9 +107,14 @@ export default {
                     })
                     context.count = 0
                 }
-                
+                context.filter = ev.target.innerHTML
+                context.loading = false
                 context.button = 'load more'                
             },500)
+        },
+        activemodal(el){
+            this.dataclient = el
+            this.$refs.modal.open()
         }
     },
     mounted:function(){
@@ -125,9 +122,9 @@ export default {
         axios.get('/api/portifolio')
         .then(function(res){
             context.loaddados = res.data.clients
-            context.loaddados.forEach(function(el){
-                el.active = false
-            })
+            // context.loaddados.forEach(function(el){
+            //     el.active = false
+            // })
             context.dados = context.loaddados
 
         }).catch(function(error){
@@ -139,6 +136,25 @@ export default {
 
 <style lang="scss" scoped>
     @import "../../styles/variables.scss";
+
+    @keyframes rotation {
+        0%   {transform:rotate(180deg);}
+        25%  {transform:rotate(270deg);}
+        50%  {transform:rotate(0);}
+        100% {transform:rotate(90deg);}
+    }
+
+    @keyframes fadeInLeft{
+        from{
+            transform: translateX(50%)
+            opacity 0;
+        }
+        to{
+            transform: translateX(0)
+            opacity 1;
+        }
+    }
+      
     section{
         padding-top: 40px;
         h1{
@@ -165,6 +181,10 @@ export default {
             }
             img.active{
                 transform:rotate(0)
+            }
+            img.loading{
+                animation:rotation 0.5s infinite;
+                animation-timing-function: linear;
             }
         }
         .searchitens{
@@ -207,7 +227,11 @@ export default {
         .item{
             width: 100%; 
             float: left;
+            transition: 0.3s ease all;
+            animation:fadeInLeft 0.3s 0.3s;
+            transition: 0.3s ease all;
             .imagebox{
+                animation:fadeInLeft 0.3s 0.3s;
                 overflow:hidden;
                 width: 100%;
                 height: 200px;
@@ -245,7 +269,6 @@ export default {
                     svg{
                         position: relative;
                         z-index: -1;
-                        // display: none;
                         width: 20px;
                         height: 20px;
                     }
@@ -255,17 +278,7 @@ export default {
                 }
 
             }
-            p{
-                padding: 0;
-                overflow: hidden;
-                height: 0;
-                transition: 0.5s ease all;
-                width: 100%;
-            }
-            p.active{
-                padding: 15px;
-                height: 500px;
-            }
+
         }
     }
     @media(min-width:600px){

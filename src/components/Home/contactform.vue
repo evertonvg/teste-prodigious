@@ -29,7 +29,7 @@
 </template>
 <script>
 import axios from 'axios'
-import sendformulario from './sendform'
+import sendformulario from './modalform'
 
 export default {
     name:'contactform',
